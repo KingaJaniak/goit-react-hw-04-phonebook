@@ -3,17 +3,21 @@ import { nanoid } from 'nanoid';
 import { Btn, Title, FormStyle } from './Form.styled.js';
 import PropTypes from "prop-types";
 
-
 const ContactForm = ({ onSubmit }) => {
-  const [formData, setFormData] = useState({ name: '', number: '' });
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
   const handleChange = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
+    const { name, value } = event.target;
+    if (name === 'name') {
+      setName(value);
+    } else if (name === 'number') {
+      setNumber(value);
+    }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const { name, number } = formData;
     if (name.trim() === '' || number.trim() === '') {
       alert('Please enter a valid name and phone number.');
       return;
@@ -26,7 +30,8 @@ const ContactForm = ({ onSubmit }) => {
     };
 
     onSubmit(newContact);
-    setFormData({ name: '', number: '' }); // Wyczyść formularz po dodaniu kontaktu
+    setName(''); // Clear
+    setNumber('');
   };
 
   return (
@@ -38,7 +43,7 @@ const ContactForm = ({ onSubmit }) => {
         pattern="^[a-zA-Zа-яА-Я]+((['\-][a-zA-Zа-яА-Я])?[a-zA-Zа-яА-Я]*)*$"
         title="Name may contain only letters, apostrophe, dash and spaces."
         required
-        value={formData.name}
+        value={name}
         onChange={handleChange}
       />
       <Title>Phone Number</Title>
@@ -48,7 +53,7 @@ const ContactForm = ({ onSubmit }) => {
         pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
         title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
         required
-        value={formData.number}
+        value={number}
         onChange={handleChange}
       />
       <Btn type="submit">Add contact</Btn>
