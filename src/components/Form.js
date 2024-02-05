@@ -22,6 +22,12 @@ const Form = () => {
   }, [contacts]);
 
   const handleAddContact = (newContact) => {
+    const isDuplicate = contacts.some(contact => contact.name === newContact.name);
+    if (isDuplicate) {
+      alert(`${newContact.name} is already in your contacts.`);
+      return;
+    }
+    
     setContacts([...contacts, newContact]);
   };
 
